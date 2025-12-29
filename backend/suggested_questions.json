@@ -1,0 +1,26 @@
+[
+  {
+    "heading": "Understanding BQ Dataset",
+    "question": "Describe the tables and the data that you can answer questions over."
+  },
+  {
+    "heading": "Targeted Offers",
+    "question": "What are the top apps used by subscribers using devices with 4G technology in December 2024?"
+  },
+  {
+    "heading": "Increase Revenue",
+    "question": "Which mobile base plans (as of Nov 30th) show the highest combined usage duration (minutes) for VOIP and IM applications during Dec 2024?"
+  },
+  {
+    "heading": "Hyperpersonalization",
+    "question": "How do the top 3 Fibre application categories (by total access time) in December 2024 differ between Enterprise and Consumer customer segments (status as of Nov 30th)?"
+  },
+  {
+    "heading": "Customer Retention",
+    "question": "List the top 3 router models most frequently associated with households reporting poor average signal strength (< -70 dBm) in 2024."
+  },
+  {
+    "heading": "Cost Allocation",
+    "question": "What percentage of total mobile data traffic (DL+UL, Dec 2024) comes from users with 5G-capable devices (as per Nov 30th status) versus those without?"
+  }
+]

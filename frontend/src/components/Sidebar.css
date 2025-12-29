@@ -1,0 +1,66 @@
+.sidebar {
+  width: 250px;
+  background-color: #f0f4f9;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  border-right: 1px solid #dfe1e5;
+}
+
+.new-chat-button {
+  font-family: 'SamsungSharpSans-Bold', 'SamsungOneKorean-700', 'Google Sans', sans-serif;
+  background-color: #e7f0fe;
+  color: #1967d2;
+  border: 1px solid #1967d2;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 1.2rem;
+  margin-bottom: 20px;
+}
+
+.new-chat-button:hover {
+  background-color: #d2e3fc;
+}
+
+.sidebar h2 {
+  font-family: 'SamsungSharpSans-Bold', 'SamsungOneKorean-700', 'Google Sans', sans-serif;
+  margin-top: 0;
+  font-size: 1.2rem;
+  color: #5f6368;
+}
+
+.history-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  flex-grow: 1;
+}
+
+.history-list li {
+  font-family: 'SamsungSharpSans-Medium', 'SamsungOneKorean-400', 'Google Sans', sans-serif;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  color: #3c4043;
+}
+
+.history-list li:hover {
+  background-color: #e0e6ec;
+}
+
+.clear-history-button {
+  font-family: 'SamsungSharpSans-Bold', 'SamsungOneKorean-700', 'Google Sans', sans-serif;
+  background-color: #d93025;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-size: 1.2rem;
+}
+
+.clear-history-button:hover {
+  background-color: #c5221f;
+}

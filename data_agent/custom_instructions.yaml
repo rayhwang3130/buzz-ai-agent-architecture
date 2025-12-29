@@ -1,0 +1,97 @@
+usecase_specific_information: |
+  ---
+  * **Brand Handling:** Users will often ask about "S24", "S25", "S26", "Galaxy S25" etc. Map these to the `Brands_Mentioned` column using LIKE operators (e.g., `Brands_Mentioned LIKE '%S25%'`).
+  * **Unified Sentiment:** The `overall_sentiment` column contains 'Positive', 'Negative', and 'Neutral'.
+  * **Feature Columns:** When users ask about specifics like "Camera", "Battery", or "Design", look for `Feature_Camera = 1`, `Feature_Battery = 1`, or `Feature_Design = 1`.
+  * **Korean Term Mapping:**
+      * "버즈량", "언급량" -> SUM(mentions) (NEVER COUNT(*))
+      * "긍정" -> overall_sentiment = 'Positive'
+      * "부정" -> overall_sentiment = 'Negative'
+      * "전년비" -> YoY comparison using `Created_Time`
+  ---
+  
+few_shot_examples: |
+  ---
+  ### Few-Shot Examples (Samsung Galaxy Buzz Analysis)
+
+  **Example 1: Basic Mentions Count**
+  * **User Query:** "Galaxy S26의 Invitation 발송 시점부터 언팩 후 5시간까지 누적 버즈량이 얼마야?" (How much is the cumulative buzz for Galaxy S26 from Invitation to 5 hours after Unpack?)
+  * **Thought Process:** 
+    1. **Filter:** `Brands_Mentioned` LIKE '%S26%'.
+    2. **Timeframe:** The user mentions a specific event period. *Crucial*: If the exact dates for "Invitation" and "Unpack" are not in the query, I check if I can infer them or if I need to ask. Assuming I know the dates or the user provided context, I filter `Created_Time`. Let's assume the period is '2026-01-01' to '2026-01-15'.
+    3. **Metric:** "버즈량" -> SUM(mentions).
+  * **Generated SQL:**
+      ```sql
+      SELECT SUM(mentions) as total_buzz
+      FROM `project.dataset.table`
+      WHERE Brands_Mentioned LIKE '%S26%'
+        AND Created_Time BETWEEN '2026-01-01' AND '2026-01-15'
+      ```
+  * **Response (Korean):** "해당 기간 동안 Galaxy S26의 누적 버즈량은 총 X건입니다."
+
+  **Example 2: Feature Sentiment Analysis**
+  * **User Query:** "S26 카메라에 대한 소비자 반응은 어때?" (How is the consumer reaction to S26 Camera?)
+  * **Thought Process:**
+    1. **Filter:** `Brands_Mentioned` LIKE '%S26%'.
+    2. **Feature:** User asked about "Camera", so filter `Feature_Camera = 1` or use `feature_sentiments_Camera`.
+    3. **Metric:** Count of sentiments from `feature_sentiments_Camera`.
+  * **Generated SQL:**
+      ```sql
+      SELECT feature_sentiments_Camera, SUM(mentions) as count
+      FROM `project.dataset.table`
+      WHERE Brands_Mentioned LIKE '%S26%'
+        AND feature_sentiments_Camera IS NOT NULL
+      GROUP BY feature_sentiments_Camera
+      ```
+
+  **Example 3: Year-over-Year Comparison**
+  * **User Query:** "전년비 S26의 버즈량이 어떻게 변했는지 말해봐" (Tell me how S26 buzz changed compared to last year.)
+  * **Thought Process:**
+    1. **Comparison:** Need S26 (Current Year) vs S25 (Previous Year, implied).
+    2. **Timeframe:** Need to align the "launch periods" for fairness. e.g., First 2 weeks of launch for both.
+    3. **SQL Strategy:** Calculate S26 buzz, Calculate S25 buzz (using date offsets or brand filters on their respective launch dates), then compare.
+  * **Generated SQL:**
+      ```sql
+      WITH S26_Buzz AS (
+        SELECT SUM(mentions) as buzz, 'S26' as model
+        FROM `project.dataset.table`
+        WHERE Brands_Mentioned LIKE '%S26%'
+          AND Created_Time BETWEEN '2026-01-01' AND '2026-01-15' -- S26 Period
+      ),
+      S25_Buzz AS (
+        SELECT SUM(mentions) as buzz, 'S25' as model
+        FROM `project.dataset.table`
+        WHERE Brands_Mentioned LIKE '%S25%'
+          AND Created_Time BETWEEN '2025-01-01' AND '2025-01-15' -- S25 Period
+      )
+      SELECT * FROM S26_Buzz UNION ALL SELECT * FROM S25_Buzz
+      ```
+
+  **Example 4: Qualitative Summary**
+  * **User Query:** "Galaxy S26의 소비자 반응을 2줄로 요약해줘." (Summarize consumer reaction to Galaxy S26 in 2 lines.)
+  * **Thought Process:**
+    1. **Data Needed:** I need the actual *text* content to summarize.
+    2. **Query:** Select `text` field for high-buzz or relevant posts.
+  * **Generated SQL:**
+      ```sql
+      SELECT text, mentions
+      FROM `project.dataset.table`
+      WHERE Brands_Mentioned LIKE '%S26%'
+      ORDER BY mentions DESC
+      LIMIT 20
+      ```
+  * **Action:** Read the returned texts and summarize in Korean.
+
+  **Example 5: Design Mentions (General)**
+  * **User Query:** "디자인을 언급한 버즈량은 얼마야" (How much is the buzz mentioning design?)
+  * **Thought Process:**
+    1. **Filter:** The user asks about "Design". I check the schema for `Feature_Design`.
+    2. **Metric:** "버즈량" is `SUM(mentions)`.
+    3. **Safety:** The table is huge (10M+ rows). I must NOT return all rows. I only need the aggregated sum.
+  * **Generated SQL:**
+      ```sql
+      SELECT SUM(mentions) as design_buzz
+      FROM `project.dataset.table`
+      WHERE Feature_Design = 1
+      ```
+  * **Response (Korean):** "디자인과 관련된 총 버즈량은 X건입니다."

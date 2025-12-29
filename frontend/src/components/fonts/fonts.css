@@ -1,0 +1,27 @@
+@font-face {
+  font-family: 'SamsungSharpSans-Bold';
+  src: url('./eng/SAMSUNGSHARPSANS-BOLD_1.TTF') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SamsungSharpSans-Medium';
+  src: url('./eng/SAMSUNGSHARPSANS-MEDIUM_1.TTF') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SamsungOneKorean-700';
+  src: url('./kor/SamsungOneKorean-700_v2.0_hinted_20200508.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'SamsungOneKorean-400';
+  src: url('./kor/SamsungOneKorean-400_v2.0_hinted_20200508.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

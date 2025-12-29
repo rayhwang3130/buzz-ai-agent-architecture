@@ -1,0 +1,30 @@
+# Core API and Server
+fastapi>=0.115.0
+uvicorn>=0.34.0
+pydantic>=2.10.0
+python-dotenv>=1.0.0
+python-multipart>=0.0.9
+
+# Data Processing
+pandas>=2.2.0
+numpy>=1.26.0
+openpyxl>=3.1.0  
+pyyaml>=6.0.0
+db-dtypes>=1.2.0 
+
+# Google Cloud & AI
+google-cloud-bigquery>=3.25.0
+google-cloud-dataplex>=1.15.0
+google-cloud-aiplatform>=1.75.0 
+google-cloud-core>=2.4.0
+google-cloud-storage>=2.14.0
+google-auth>=2.27.0
+google-genai>=1.0.0 
+google-generativeai>=0.8.0 
+
+# Agent Development Kit
+google-adk>=0.0.1 
+
+# Utilities
+requests>=2.31.0
+tqdm>=4.66.0
