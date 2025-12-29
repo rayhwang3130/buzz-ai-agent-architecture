@@ -79,8 +79,11 @@ def infer_bq_schema_from_csv(csv_path: str) -> List[bigquery.SchemaField]:
 
 def create_bq_table_if_needed(schema: List[bigquery.SchemaField]):
     dataset_ref = bq_client.dataset(DATASET_NAME)
+    
+    # 1. Check/Create Dataset
     try:
         bq_client.get_dataset(dataset_ref)
+        logger.info(f"Dataset {DATASET_NAME} exists.")
     except NotFound:
         logger.info(f"Dataset {DATASET_NAME} not found. Creating...")
         dataset = bigquery.Dataset(dataset_ref)
@@ -88,10 +91,11 @@ def create_bq_table_if_needed(schema: List[bigquery.SchemaField]):
         bq_client.create_dataset(dataset)
         logger.info(f"Dataset {DATASET_NAME} created.")
 
+    # 2. Check/Create Table
     table_ref = dataset_ref.table(TABLE_NAME)
     try:
         table = bq_client.get_table(table_ref)
-        logger.info(f"Table {TABLE_NAME} already exists.")
+        logger.info(f"Table {TABLE_NAME} exists.")
         
         # Check if embedding column exists
         has_embedding = any(field.name == 'text_embedding' for field in table.schema)
@@ -101,7 +105,7 @@ def create_bq_table_if_needed(schema: List[bigquery.SchemaField]):
             new_schema.append(bigquery.SchemaField("text_embedding", "FLOAT", mode="REPEATED"))
             table.schema = new_schema
             bq_client.update_table(table, ["schema"])
-            logger.info("Table schema updated.")
+            logger.info("Table schema updated with 'text_embedding'.")
             
     except NotFound:
         logger.info(f"Table {TABLE_NAME} not found. Creating with inferred schema...")

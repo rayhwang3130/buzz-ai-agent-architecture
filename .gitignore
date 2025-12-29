@@ -40,5 +40,5 @@ frontend/yarn-error.log*
 *.tfstate.backup
 
 # BigQuery / Data (Optional - uncomment if you want to exclude data files)
-# *.csv
-# *.xlsx
+*.csv
+*.xlsx
